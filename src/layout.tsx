@@ -9,9 +9,7 @@ function Layout() {
        <AppHeader/>
        <Outlet/>
       </div>
-     
     </>
   ) 
 }
-
 export default Layout
