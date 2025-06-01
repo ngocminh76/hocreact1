@@ -2,6 +2,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import type { FormProps } from 'antd';
 import { useState } from 'react';
 import './register.scss'
+import { loginApi } from '@/services/api';
 type FieldType = {
   fullname: string;
   email: string;
@@ -9,13 +10,17 @@ type FieldType = {
   phone: string;
 };
 
-const RegisterPage=()=>{
+const RegisterPage = () => {
 
-    const[isSubmit,setIsSubmit]=useState(true);
+  const [isSubmit, setIsSubmit] = useState(false);
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     console.log('✅ Success:', values);
-    setIsSubmit(true);
+    const res = await loginApi("user@gmail.com", "123456")
+
+    console.log(">>>> check res :", res);
+    // setIsSubmit(true);
   };
+
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     console.log('❌ Failed:', errorInfo);
@@ -85,4 +90,4 @@ const RegisterPage=()=>{
     </div>
   );
 }
-export  default RegisterPage
+export default RegisterPage

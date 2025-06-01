@@ -14,38 +14,38 @@ import HomePage from 'pages/client/home';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout/>,
-    children:[
+    element: <Layout />,
+    children: [
       {
-          index:true,
-          element:<HomePage/>
-        },
+        index: true,
+        element: <HomePage />
+      },
 
       {
         path: "/book",
-        element: <BookPage/>,
+        element: <BookPage />,
       },
       {
         path: "/about",
         element: <AboutPage />,
       },
-    
+
     ]
   },
   {
     path: "/login",
-    element: <LoginPage/>,
+    element: <LoginPage />,
   },
   {
     path: "/register",
-    element: <RegisterPage/>,
+    element: <RegisterPage />,
   },
-   
+
 ]);
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {/* <Layout /> */}
-        <RouterProvider router={router} />
+    <RouterProvider router={router} />
 
   </StrictMode>,
 )
