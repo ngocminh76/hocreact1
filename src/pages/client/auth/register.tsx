@@ -1,10 +1,11 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { App, Button, Checkbox, Divider, Form, Input } from 'antd';
 import type { FormProps } from 'antd';
 import { useState } from 'react';
 import './register.scss'
-import { loginApi } from '@/services/api';
+import { registerAPI } from '@/services/api';
+import { Link, useNavigate } from 'react-router-dom';
 type FieldType = {
-  fullname: string;
+  fullName: string;
   email: string;
   password: string;
   phone: string;
@@ -13,19 +14,27 @@ type FieldType = {
 const RegisterPage = () => {
 
   const [isSubmit, setIsSubmit] = useState(false);
+  const { message } = App.useApp(); // dùng message từ Ant Design
+  const navigate = useNavigate();
+
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
-    console.log('✅ Success:', values);
-    const res = await loginApi("user@gmail.com", "123456")
 
-    console.log(">>>> check res :", res);
-    // setIsSubmit(true);
-  };
+    setIsSubmit(true);
 
+    const { email, fullName, password, phone } = values;
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('❌ Failed:', errorInfo);
+    const res = await registerAPI(fullName, email, password, phone);
+
+    if (res.data) {
+      message.success('Đăng ký user thành công.');
+      navigate('/login');
+    } else {
+      message.error(res.message);
+    }
+
     setIsSubmit(false);
   };
+
   return (
     <div className="register-container">
       <h2>Đăng ký tài khoản</h2>
@@ -33,13 +42,12 @@ const RegisterPage = () => {
         name="register"
         layout="vertical"
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
         className="register-form"
       >
         <Form.Item
           label="Họ và tên"
-          name="fullname"
+          name="fullName"
           rules={[{ required: true, message: 'Vui lòng nhập họ và tên' }]}
         >
           <Input />
@@ -87,6 +95,9 @@ const RegisterPage = () => {
           </Button>
         </Form.Item>
       </Form>
+
+      <Divider>Or</Divider>
+      <div>Đã có tài khoản ? <Link to="/login">Đăng Nhập</Link></div>
     </div>
   );
 }
